@@ -57,10 +57,13 @@ class Mentor:
         self.name = name
         self.surname = surname
         self.courses_attached = []
-        self.grades_mentors = {}
+        
         
 class Lecturer(Mentor):
-
+    def __init__(self, name, surname):
+        super().__init__(name, surname)
+        self.grades_mentors = {}
+    
     def rating_lect(self):
         self.all_sum = []
         self.all_len = []
@@ -68,8 +71,8 @@ class Lecturer(Mentor):
         for self.value in self.grades_mentors.values():
             self.all_sum.append(sum(self.value))
             self.all_len.append(len(self.value)) 
-        return round(sum(self.all_sum)/sum(self.all_len), 2)
-
+        try: return round(sum(self.all_sum)/sum(self.all_len), 2)
+        except: return round(sum(self.all_sum)/1, 2)
     
     def __str__(self):
 
@@ -111,8 +114,6 @@ some_student = Student('Vitya', 'Petrov', 'your_gender')
 some_student.courses_in_progress += ['OOP']
 some_student.courses_in_progress += ['Python'] 
 
-just_student = Student ('Kolya', 'Ychebnikov', 'man')
-just_student.courses_in_progress += ['OOP']
 
 # Лекторы
 some_lecturer = Lecturer('Bob', 'Netologiev')
@@ -124,31 +125,60 @@ some_lecturer_1.courses_attached += ['OOP']
 some_lecturer_1.courses_attached += ['Python']
 
         # Оценки лектору
-just_student.rate_lecture(some_lecturer, 'OOP', 10)
-just_student.rate_lecture(some_lecturer, 'OOP', 8)
-just_student.rate_lecture(some_lecturer, 'OOP', 10)
-best_student.rate_lecture(some_lecturer, 'Python', 10) # это
+best_student.rate_lecture(some_lecturer, 'Python', 5)
+best_student.rate_lecture(some_lecturer, 'Python', 5)
+best_student.rate_lecture(some_lecturer, 'Python', 5)
 
-just_student.rate_lecture(some_lecturer_1, 'OOP', 10)
-just_student.rate_lecture(some_lecturer_1, 'OOP', 10)
-just_student.rate_lecture(some_lecturer_1, 'OOP', 10)
+
+some_student.rate_lecture(some_lecturer_1, 'Python', 10)
+some_student.rate_lecture(some_lecturer_1, 'Python', 10)
+some_student.rate_lecture(some_lecturer_1, 'Python', 10)
 
 # Проверяющие
 cool_mentor = Reviewer('Some', 'Buddy')
 cool_mentor.courses_attached += ['Python']
 cool_mentor.courses_attached += ['Git']
 cool_mentor.courses_attached += ['OOP']
+
+cool_mentor_1 = Reviewer('Tom', 'Ivanov')
+cool_mentor_1.courses_attached += ['Python']
+cool_mentor_1.courses_attached += ['OOP']
+
         # Оценки студенту
-cool_mentor.rate_hw(best_student, 'Python', 7)
+cool_mentor.rate_hw(best_student, 'Python', 9)
 cool_mentor.rate_hw(best_student, 'Python', 10)
 cool_mentor.rate_hw(best_student, 'Python', 10)
 
-cool_mentor.rate_hw(some_student, 'OOP', 10)
-cool_mentor.rate_hw(some_student, 'OOP', 10)
-cool_mentor.rate_hw(some_student, 'OOP', 10)
+cool_mentor_1.rate_hw(some_student, 'Python', 5)
+cool_mentor_1.rate_hw(some_student, 'Python', 5)
+cool_mentor_1.rate_hw(some_student, 'Python', 10)
  
 
+student_list = [best_student, some_student]
+lecturer_list = [some_lecturer, some_lecturer_1]
 
+def course_rating(course, person_list):
+    for stud in person_list:
+        
+        if course in stud.grades:
+            print (f'У {stud.name} средний балл по теме {course} составляет: {stud.rating_stud()}')
+        else: print(f'У {stud.name} данный курс не найден')
+
+def course_rating_1(course, person_list):
+    for stud in person_list:
+        
+        if course in stud.grades_mentors:
+            print (f'У {stud.name} средний балл по теме {course} составляет: {stud.rating_lect()}')
+        else: print(f'У {stud.name} данный курс не найден')     
+
+
+print('Оценки студентов:')
+print(course_rating('Python', student_list))
+print()
+print('Оценки лекторов:')
+print(course_rating_1('Python', lecturer_list))
+print()
+print()
 print('\nУ проверяющих:')
 print(cool_mentor)
 print('\nУ лекторов:')
